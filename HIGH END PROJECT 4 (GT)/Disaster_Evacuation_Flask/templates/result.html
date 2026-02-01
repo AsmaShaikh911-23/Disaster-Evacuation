@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evacuation Route Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            max-width: 800px;
+            margin: 20px auto;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .result-box {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .result-box.success {
+            background-color: #e8f5e9;
+            border-left: 5px solid #2ecc71;
+            color: #1b5e20;
+        }
+        .result-box.error {
+            background-color: #fbe9e7;
+            border-left: 5px solid #e74c3c;
+            color: #b71c1c;
+        }
+        .result-box h2 {
+            margin: 0 0 10px 0;
+        }
+        .map-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .map-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #dddfe2;
+            border-radius: 8px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .back-link:hover {
+            background-color: #2980b9;
+        }
+        .center-text {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Evacuation Plan</h1>
+        
+        {% if no_route %}
+            <div class="result-box error">
+                <h2>No Safe Route Available!</h2>
+                <p>Due to the <strong>{{ disaster }}</strong>, all paths to the Hyderabad safe zone are blocked from your location. Please stay put and seek local shelter immediately.</p>
+            </div>
+        {% else %}
+            <div class="result-box success">
+                <h2>Safe Route Found!</h2>
+                <p><strong>Route:</strong> {{ route }}</p>
+                <p><strong>Total Distance:</strong> {{ distance }} units</p>
+            </div>
+            <div class="map-container">
+                <h3>Evacuation Map</h3>
+                <p>The red line indicates the safest path to Hyderabad.</p>
+                <img src="{{ url_for('static', filename='evacuation_map.png') }}?v={{ range(1, 1000) | random }}" alt="Evacuation Route Map">
+            </div>
+        {% endif %}
+        <div class="center-text">
+            <a href="/" class="back-link">Plan Another Evacuation</a>
+        </div>
+    </div>
+</body>
+</html>
